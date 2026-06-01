@@ -1,0 +1,11 @@
+﻿<Application x:Class="EcoBite.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:EcoBite"
+             xmlns:conv="clr-namespace:EcoBite.Converters"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <conv:Base64ToImageConverter x:Key="Base64ToImageConverter"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Application.Resources>
+</Application>

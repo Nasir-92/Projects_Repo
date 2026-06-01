@@ -1,0 +1,249 @@
+﻿<UserControl x:Class="EcoBite.Views.CrearReceta"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EcoBite.ViewModels"
+             xmlns:conv="clr-namespace:EcoBite.Converters">
+
+    <Grid>
+
+        <!-- Fondo -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/fondo.png"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <!-- Overlay verde -->
+        <Rectangle Fill="#663C7E64"/>
+
+        <Grid Margin="40">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- HEADER -->
+
+
+
+            <!-- CARD -->
+            <Border Grid.Row="1"
+                    MaxWidth="750"
+                    Padding="40"
+                    CornerRadius="22"
+                    Background="#F2F2F2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    Margin="20">
+
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="25"
+                                      ShadowDepth="6"
+                                      Opacity="0.35"/>
+                </Border.Effect>
+
+                <!-- Scroll para que nunca se oculten los botones -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- HEADER-->
+                        <Grid  Grid.Row="0" Margin="0,0,0,25" >
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- BOTON VOLVER -->
+                            <Button Content="←"
+                                    Width="45"
+                                    Height="45"
+                                    FontSize="20"
+                                    Background="#22FFFFFF"
+                                    BorderThickness="0"
+                                    Foreground="Black"
+                                    Command="{Binding VolverCommand}"/>
+
+                            <!-- LOGO -->
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+
+                                <Grid Width="100" Height="100">
+
+                                    <Ellipse Fill="White" Margin="0,0,10,10"/>
+
+                                    <Ellipse Fill="#2E7D32"
+                                             HorizontalAlignment="Right"
+                                             Width="90"
+                                             Margin="0,0,10,19">
+
+                                        <Ellipse.OpacityMask>
+                                            <ImageBrush ImageSource="/Assets/logo.png"
+                                                        Stretch="Uniform"/>
+                                        </Ellipse.OpacityMask>
+
+                                    </Ellipse>
+
+                                </Grid>
+
+                            </StackPanel>
+
+                            <!-- Menú usuario -->
+                            <Grid Grid.Column="2">
+
+                                <ToggleButton x:Name="MenuUsuarioBtn"
+                                              Width="40"
+                                              Height="40"
+                                              FontSize="18"
+                                              Background="Transparent"
+                                              BorderThickness="0"
+                                              Content="👤"/>
+
+                                <Popup PlacementTarget="{Binding ElementName=MenuUsuarioBtn}"
+                                       Placement="Bottom"
+                                       StaysOpen="False"
+                                       IsOpen="{Binding IsChecked, ElementName=MenuUsuarioBtn}">
+
+                                    <Border Background="White"
+                                            CornerRadius="10"
+                                            Padding="10"
+                                            Width="160"
+                                            BorderBrush="#DDD"
+                                            BorderThickness="1">
+
+                                        <StackPanel>
+
+                                            <Button Content="⚙ Configuración"
+                                                    Margin="0,0,0,5"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    HorizontalAlignment="Left"
+                                                    Command="{Binding IrAConfiguracionCommand}"/>
+
+                                            <Button Content="ℹ Acerca de"
+                                                    Margin="0,0,0,5"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    HorizontalAlignment="Left"
+                                                    Command="{Binding IrAAcercaDeCommand}"/>
+
+                                            <Separator/>
+
+                                            <Button Content="🚪 Cerrar sesión"
+                                                    Margin="0,5,0,0"
+                                                    Background="#C62828"
+                                                    Foreground="White"
+                                                    BorderThickness="0"
+                                                    Padding="6"
+                                                    Command="{Binding CerrarSesionCommand}"/>
+
+                                        </StackPanel>
+                                    </Border>
+
+                                </Popup>
+
+                            </Grid>
+
+                        </Grid>
+                        <!--HEADER-->
+                        <!-- TITULO -->
+                        <TextBlock Grid.Row="1"
+                                   Text="Crear nueva receta"
+                                   FontSize="26"
+                                   FontWeight="Bold"
+                                   Foreground="#2E7D32"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,25"/>
+
+
+
+                        <!-- NOMBRE -->
+                        <StackPanel Grid.Row="2" Margin="0,0,0,15">
+                            <TextBlock Text="Nombre" FontWeight="Bold"/>
+                            <TextBox Height="40"
+                                     Text="{Binding Nombre}"/>
+                        </StackPanel>
+
+                        <!-- DESCRIPCIÓN -->
+                        <StackPanel Grid.Row="3" Margin="0,0,0,15">
+                            <TextBlock Text="Descripción" FontWeight="Bold"/>
+                            <TextBox Height="80"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding Descripcion}"/>
+                        </StackPanel>
+
+                        <!-- PASOS -->
+                        <StackPanel Grid.Row="4" Margin="0,0,0,15">
+                            <TextBlock Text="Pasos" FontWeight="Bold"/>
+                            <TextBox Height="120"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding Pasos}"/>
+                        </StackPanel>
+
+                        <!-- IMAGEN -->
+                        <StackPanel Grid.Row="5" Margin="0,0,0,20">
+
+                            <Button Content="Seleccionar imagen"
+                                    Height="35"
+                                    Margin="0,0,0,10"
+                                    Command="{Binding SeleccionarImagenCommand}"/>
+
+                            <Border Height="160"
+                                    Background="#EEEEEE"
+                                    CornerRadius="12"
+                                    ClipToBounds="True">
+
+                                <Image Source="{Binding Imagen,
+                                       Converter={StaticResource Base64ToImageConverter}}"
+                                       Stretch="UniformToFill"/>
+
+                            </Border>
+
+                        </StackPanel>
+
+                        <!-- BOTONES -->
+                        <StackPanel Grid.Row="6"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+
+                            <Button Content="Crear receta"
+                                    Width="160"
+                                    Height="42"
+                                    Margin="10"
+                                    Background="#5ECF85"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    BorderThickness="0"
+                                    Command="{Binding CrearCommand}"/>
+
+                            <Button Content="Cancelar"
+                                    Width="160"
+                                    Height="42"
+                                    Margin="10"
+                                    Command="{Binding CancelarCommand}"/>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </ScrollViewer>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

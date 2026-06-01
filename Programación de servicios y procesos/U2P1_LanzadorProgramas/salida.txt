@@ -1,0 +1,4 @@
+✔ Microsoft Edge lanzado correctamente
+✔ Microsoft Edge lanzado correctamente
+Hola Mundo
+✔ Steam lanzado correctamente

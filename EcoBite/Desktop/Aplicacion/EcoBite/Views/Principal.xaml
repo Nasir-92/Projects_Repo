@@ -1,0 +1,369 @@
+﻿<UserControl x:Class="EcoBite.Views.Principal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:EcoBite.ViewModels"
+             xmlns:converters="clr-namespace:EcoBite.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+
+
+    <UserControl.Resources>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+
+        <!-- Fondo -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/fondo.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <!-- Contenedor principal -->
+        <Border Background="#AAFFFFFF"
+                CornerRadius="20"
+                Width="650"
+                Padding="25"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+
+            <StackPanel>
+
+                <!-- HEADER -->
+                <Grid Margin="0,0,0,25">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Logo + nombre -->
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center" Grid.Column="0">
+
+                        <Image Source="/Assets/logo.png"
+                               Width="40"
+                               Height="40"/>
+
+                        <TextBlock Text="EcoBite"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <!-- Text="{Binding UsuarioLogueado.Nombre}" -->
+                    <TextBlock Text=""
+                               FontSize="22"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Grid.Column="1"
+                               Margin="10,0,0,0"/>
+                    <!-- Menú usuario -->
+                    <Grid Grid.Column="2">
+
+                        <ToggleButton x:Name="MenuUsuarioBtn"
+                                      Width="40"
+                                      Height="40"
+                                      FontSize="18"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      Content="👤"/>
+
+                        <Popup PlacementTarget="{Binding ElementName=MenuUsuarioBtn}"
+                               Placement="Bottom"
+                               StaysOpen="False"
+                               IsOpen="{Binding IsChecked, ElementName=MenuUsuarioBtn}">
+
+                            <Border Background="White"
+                                    CornerRadius="10"
+                                    Padding="10"
+                                    Width="160"
+                                    BorderBrush="#DDD"
+                                    BorderThickness="1">
+
+                                <StackPanel>
+
+                                    <Button Content="⚙ Configuración"
+                                            Margin="0,0,0,5"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding IrAConfiguracionCommand}"/>
+
+                                    <Button Content="ℹ Acerca de"
+                                            Margin="0,0,0,5"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding IrAAcercaDeCommand}"/>
+
+                                    <Separator/>
+
+                                    <Button Content="🚪 Cerrar sesión"
+                                            Margin="0,5,0,0"
+                                            Background="#C62828"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            Padding="6"
+                                            Command="{Binding CerrarSesionCommand}"/>
+
+                                </StackPanel>
+                            </Border>
+
+                        </Popup>
+
+                    </Grid>
+
+                </Grid>
+
+
+                <!-- BUSCADOR -->
+                <StackPanel HorizontalAlignment="Center">
+
+                    <Border Background="White"
+                            CornerRadius="10"
+                            BorderBrush="#DDD"
+                            BorderThickness="1"
+                            Width="300"
+                            Height="38">
+
+                        <TextBox BorderThickness="0"
+                                 Padding="8"
+                                 FontSize="14"
+                                 Background="Transparent"
+                                 Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    </Border>
+
+
+                    <!-- SUGERENCIAS -->
+                    <ListBox ItemsSource="{Binding RestaurantesSugeridos}"
+                             Visibility="{Binding HaySugerencias, Converter={StaticResource BoolToVisibilityConverter}}"
+                             Width="300"
+                             MaxHeight="180"
+                             Background="White"
+                             BorderBrush="#DDD"
+                             BorderThickness="1"
+                             Margin="0,2,0,0">
+
+                        <ListBox.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <Border Padding="6"
+                                        Margin="2"
+                                        CornerRadius="6"
+                                        Background="White"
+                                        Cursor="Hand">
+
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="White"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F3F3F3"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Imagen -->
+                                        <Border Width="45"
+                                                Height="45"
+                                                CornerRadius="6"
+                                                ClipToBounds="True">
+
+                                            <Image Source="{Binding Imagen, Converter={StaticResource Base64ToImageConverter}}"
+                                                   Stretch="UniformToFill"/>
+
+                                        </Border>
+
+                                        <!-- Info restaurante -->
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="8,0,0,0">
+
+                                            <TextBlock Text="{Binding Nombre}"
+                                                       FontWeight="Bold"
+                                                       FontSize="13"/>
+
+                                            <TextBlock Text="{Binding Ubicacion}"
+                                                       FontSize="11"
+                                                       Foreground="#666"/>
+
+                                        </StackPanel>
+
+                                    </Grid>
+
+                                    <Border.InputBindings>
+
+                                        <MouseBinding MouseAction="LeftClick"
+                                                      Command="{Binding DataContext.AbrirRestauranteSugeridoCommand,
+                                                      RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                      CommandParameter="{Binding}"/>
+
+                                    </Border.InputBindings>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                </StackPanel>
+
+
+                <!-- CONTENIDO PRINCIPAL -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0,25,0,0">
+
+
+                    <!-- RESTAURANTES -->
+                    <StackPanel Margin="20,0"
+                                HorizontalAlignment="Center">
+
+                        <TextBlock Text="Restaurantes"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <Button Command="{Binding AnteriorRestauranteCommand}"
+                                    FontSize="26"
+                                    Content="◀"
+                                    Background="Transparent"
+                                    BorderThickness="0"/>
+
+                            <Button Background="Transparent"
+                                    BorderThickness="0"
+                                    Margin="10"
+                                    Command="{Binding AbrirRestauranteCommand}">
+
+                                <Border Background="White"
+                                        CornerRadius="12"
+                                        Padding="8"
+                                        BorderBrush="#DDD"
+                                        BorderThickness="1">
+
+                                    <StackPanel>
+
+                                        <Image Source="{Binding RestauranteActual.Imagen, Converter={StaticResource Base64ToImageConverter}}"
+                                               Width="160"
+                                               Height="100"
+                                               Stretch="UniformToFill"/>
+
+                                        <TextBlock Text="{Binding RestauranteActual.Nombre}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,5,0,0"/>
+
+                                    </StackPanel>
+
+                                </Border>
+
+                            </Button>
+
+                            <Button Command="{Binding SiguienteRestauranteCommand}"
+                                    FontSize="26"
+                                    Content="▶"
+                                    Background="Transparent"
+                                    BorderThickness="0"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+
+                    <!-- RECETAS -->
+                    <StackPanel Margin="20,0"
+                                HorizontalAlignment="Center">
+
+                        <TextBlock Text="Recetas"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <Button Command="{Binding AnteriorRecetaCommand}"
+                                    IsEnabled="{Binding RecetaActual, Converter={StaticResource NullToBoolConverter}}"
+                                    FontSize="26"
+                                    Content="◀"
+                                    Background="Transparent"
+                                    BorderThickness="0"/>
+
+                            <Button Background="Transparent"
+                                    BorderThickness="0"
+                                    Margin="10"
+                                    Command="{Binding AbrirRecetaCommand}">
+
+                                <Border Background="White"
+                                        CornerRadius="12"
+                                        Padding="8"
+                                        BorderBrush="#DDD"
+                                        BorderThickness="1">
+
+                                    <StackPanel>
+
+                                        <Image Source="{Binding RecetaActual.Imagen, Converter={StaticResource Base64ToImageConverter}}"
+                                               Width="160"
+                                               Height="100"
+                                               Stretch="UniformToFill"/>
+
+                                        <TextBlock Text="{Binding RecetaActual.Nombre}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,5,0,0"/>
+
+                                    </StackPanel>
+
+                                </Border>
+
+                            </Button>
+
+                            <Button Command="{Binding SiguienteRecetaCommand}"
+                                    IsEnabled="{Binding RecetaActual, Converter={StaticResource NullToBoolConverter}}"
+                                    FontSize="26"
+                                    Content="▶"
+                                    Background="Transparent"
+                                    BorderThickness="0"/>
+
+                        </StackPanel>
+
+                        <Button Content="➕ Crear receta"
+                                Width="160"
+                                Height="40"
+                                Margin="0,15,0,0"
+                                Command="{Binding IrACrearRecetaCommand}"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</UserControl>
